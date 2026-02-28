@@ -5,7 +5,7 @@
     "start_url": "/ventajei/",
     "display": "standalone",
     "background_color": "#fff7ef",
-    "theme_color": "#6b4f3c",
+    "theme_color": "#f2e9e0",
     "icons": [
         {
             "src": "icon-72.png",
