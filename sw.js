@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pwa-jei-v1';
+const CACHE_NAME = 'pwa-jei-v2';
 const urlsToCache = [
     '/ventajei/',
     '/ventajei/index.html',
