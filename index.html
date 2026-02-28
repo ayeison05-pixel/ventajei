@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Punto de Venta Jei</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Pantalla principal -->
+        <div id="main-screen" class="screen active">
+            <header class="main-header" id="main-header">
+                <h1>Punto de Venta Jei</h1>
+                <p class="subtitulo">servicio de calidad</p>
+            </header>
+            <header class="balance-header">
+                <h2><i class="fas fa-chart-line"></i> Balance del día</h2>
+                <div class="balance-row">
+                    <span><i class="fas fa-money-bill-wave"></i> Efectivo:</span>
+                    <span id="balance-efectivo">$ 0</span>
+                </div>
+                <div class="balance-row">
+                    <span><i class="fas fa-credit-card"></i> Transferencia:</span>
+                    <span id="balance-transferencia">$ 0</span>
+                </div>
+                <button id="btn-cierre" class="btn-cierre"><i class="fas fa-lock"></i> Cierre diario</button>
+            </header>
+            <nav class="menu-principal">
+                <button id="btn-venta" class="menu-btn"><i class="fas fa-shopping-cart"></i> Venta</button>
+                <button id="btn-inventario" class="menu-btn"><i class="fas fa-boxes"></i> Inventario</button>
+                <button id="btn-historial" class="menu-btn"><i class="fas fa-history"></i> Historial</button>
+                <button id="btn-recibos" class="menu-btn"><i class="fas fa-receipt"></i> Recibos</button>
+            </nav>
+        </div>
+
+        <!-- Pantalla Venta -->
+        <div id="venta-screen" class="screen">
+            <header class="screen-header">
+                <button class="back-btn"><i class="fas fa-arrow-left"></i></button>
+                <h2>Nueva Venta</h2>
+            </header>
+            <div class="venta-content">
+                <div class="selector-producto">
+                    <select id="producto-select">
+                        <option value="">Seleccionar producto</option>
+                    </select>
+                    <div id="controles-producto" class="controles-producto"></div>
+                    <button id="agregar-producto-btn" class="btn-primary"><i class="fas fa-plus"></i> Agregar al carrito</button>
+                </div>
+                <div class="carrito">
+                    <h3>Carrito</h3>
+                    <ul id="carrito-lista"></ul>
+                    <div class="total-carrito">
+                        <strong>Total: </strong><span id="total-venta">$ 0</span>
+                    </div>
+                </div>
+                <div class="pago">
+                    <h3>Método de pago</h3>
+                    <label><input type="radio" name="pago" value="efectivo" checked> Solo efectivo</label>
+                    <label><input type="radio" name="pago" value="transferencia"> Solo transferencia</label>
+                    <label><input type="radio" name="pago" value="mixto"> Mixto</label>
+                    <div id="mixto-fields" style="display:none;">
+                        <input type="number" id="monto-efectivo" placeholder="Monto efectivo" min="0" step="100">
+                        <input type="number" id="monto-transferencia" placeholder="Monto transferencia" min="0" step="100">
+                    </div>
+                    <button id="finalizar-venta-btn" class="btn-success"><i class="fas fa-check"></i> Finalizar venta</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pantalla Inventario -->
+        <div id="inventario-screen" class="screen">
+            <header class="screen-header">
+                <button class="back-btn"><i class="fas fa-arrow-left"></i></button>
+                <h2>Inventario</h2>
+                <button id="nuevo-producto-btn" class="btn-icon"><i class="fas fa-plus"></i></button>
+            </header>
+            <div class="inventario-content">
+                <ul id="lista-productos" class="lista-productos"></ul>
+            </div>
+            <div id="producto-modal" class="modal">
+                <div class="modal-content">
+                    <span class="close-modal">&times;</span>
+                    <h3 id="modal-title">Nuevo Producto</h3>
+                    <input type="text" id="prod-nombre" placeholder="Nombre">
+                    <input type="number" id="prod-precio" placeholder="Precio" min="0" step="100">
+                    <input type="number" id="prod-stock" placeholder="Stock" min="0" step="any">
+                    <label for="prod-tipo">Tipo:</label>
+                    <select id="prod-tipo">
+                        <option value="unidad">Unidad</option>
+                        <option value="peso">Peso (kg)</option>
+                        <option value="empaque">Empaque (con unidades)</option>
+                    </select>
+                    <div id="empaque-fields" style="display:none;">
+                        <input type="number" id="prod-unidades-por-empaque" placeholder="Unidades por empaque" min="1" step="1">
+                    </div>
+                    <button id="guardar-producto-btn" class="btn-primary">Guardar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pantalla Historial -->
+        <div id="historial-screen" class="screen">
+            <header class="screen-header">
+                <button class="back-btn"><i class="fas fa-arrow-left"></i></button>
+                <h2>Historial de Ventas</h2>
+            </header>
+            <div class="historial-filtros">
+                <input type="date" id="filtro-fecha">
+                <select id="filtro-metodo">
+                    <option value="">Todos</option>
+                    <option value="efectivo">Efectivo</option>
+                    <option value="transferencia">Transferencia</option>
+                    <option value="mixto">Mixto</option>
+                </select>
+                <button id="aplicar-filtros"><i class="fas fa-filter"></i> Filtrar</button>
+            </div>
+            <div class="historial-lista" id="historial-lista"></div>
+        </div>
+
+        <!-- Pantalla Recibos -->
+        <div id="recibo-screen" class="screen">
+            <header class="screen-header">
+                <button class="back-btn"><i class="fas fa-arrow-left"></i></button>
+                <h2>Recibo de Venta</h2>
+            </header>
+            <div id="recibo-contenido" class="recibo-contenido"></div>
+        </div>
+    </div>
+
+    <!-- Modales personalizados -->
+    <div id="modal-confirm" class="custom-modal">
+        <div class="custom-modal-content">
+            <p id="confirm-mensaje"></p>
+            <div class="modal-buttons">
+                <button id="confirm-si" class="btn-primary">Sí</button>
+                <button id="confirm-no" class="btn-secondary">No</button>
+            </div>
+        </div>
+    </div>
+    <div id="modal-alert" class="custom-modal">
+        <div class="custom-modal-content">
+            <p id="alert-mensaje"></p>
+            <button id="alert-ok" class="btn-primary">Aceptar</button>
+        </div>
+    </div>
+    <div id="modal-reporte" class="custom-modal">
+        <div class="custom-modal-content reporte-content">
+            <span class="close-modal-reporte">&times;</span>
+            <h3>Reporte de Cierre Diario</h3>
+            <div id="reporte-detalle"></div>
+            <button id="reporte-cerrar" class="btn-primary">Cerrar</button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
